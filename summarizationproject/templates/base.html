@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Summaryzer</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="../static/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+  <link href="../static/css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+    integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+</head>
+</head>
+
+<body style="background-color: aliceblue;">
+  <h1 style="text-align:center;">Text Summarization</h1>
+<!-- Start of Main Section -->
+  <div class="container">
+    <div class="section">
+
+      <div class="row">
+        <div class="input-field col s12 m10">
+          <div class="icon-block"style="margin-top:0;">
+            <form method="POST" id ="form" action="/analyze" enctype=multipart/form-data>
+              {% csrf_token %}
+              <!-- take files here -->
+              <input type = "file" id = "file" name = "filename" accept=".docx">
+              <br>
+              <br>
+              <!-- take text here -->
+              <textarea name="text" id = "text" style="width: 120%; height: fit-content; " cols="10" rows="15" class="form-control"
+                placeholder="Enter Text Here"></textarea>
+              <br />
+              <button class="btn btn-small waves-effect waves-light light-blue lighten-1" type="reset">Clear</button>
+              <button class="btn btn-small waves-effect waves-light purple lighten-1" type="submit">Summarize</button>
+
+            </form>
+            <br> 
+            <br>
+            <div style="border: 2px solid black; text-align:justify; padding: 5px 50px; margin: auto;" class="row l6 s12 m10 black-text">
+              <div>
+                <!-- Validations -->
+                <pre>rouge-1 -> Unigram(Checked by single word)  <br>rouge-2 -> Bigram(Checked by two words)   <br>rouge-l -> Trigram(Checked by triple or more words)</pre>
+                <pre>r-> Recall   p-> Precision   f-> F1-Score </pre>
+              </div>
+              <h5 class="center">Evaluation</h5>
+              <p class="darken-4 text">{{valuex}}</p>
+          </div>
+          </div>
+        </div>
+
+      </div>
+
+     
+
+    </div>
+  </div>
+  <!-- End -->
+
+  <!-- Result Display-->
+  <section class="section section-solutions-about blue-grey lighten-5 black-text text-darken-2">
+    <div class="container black-text text-darken-2">
+
+      <!--   Icon Section   -->
+      <div class="row">
+        <div class="col s12 m6">
+          <div class="icon-block">
+            <h2 class="center brown-text"><i class="material-icons">group</i></h2>
+            <!-- inputed text and counted words -->
+            <h5 class="center">Given Text</h5>
+            <h6>Total Words: <span>{{ myword }} </span></h6>
+            <p class="darken-1" style="text-align:justify;">{{mytext}}</p>
+            <div class="alert alert-info" role="alert">
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col s12 m6 black-text">
+          <div class="icon-block">
+            <h2 class="center brown-text"><i class="material-icons">chrome_reader_mode</i></h2>
+            <!-- summarized text and counted words -->
+            <h5 class="center">Summary</h5>
+            <div class="lighten-1" role="alert">
+              <h6>Total Words: <span>{{ sumword }} </span></h6>
+            </div>
+            <p class="darken-4 text" style="text-align:justify;">{{summarize}}</p>
+
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+  </section>
+
+
+
+  <footer class="page-footer grey darken-4">
+    <div class="container" id="aboutapp">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">About Summary App</h5>
+        
+        </div>
+
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect With Me</h5>
+          <ul>
+            <a href="#" target="_blank" class="white-text">
+              <i class="fab fa-facebook fa-4x"></i>
+            </a>
+            <a href="#" target="_blank"
+              class="white-text">
+              <i class="fab fa-linkedin fa-4x"></i>
+            </a>
+            <a href="#" target="_blank" class="white-text">
+              <i class="fab fa-youtube-square fa-4x"></i>
+            </a>
+            <a href="#" target="_blank" class="white-text">
+              <i class="fab fa-github-square fa-4x"></i>
+            </a>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+     
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="static/js/materialize.js"></script>
+  <script src="static/js/init.js"></script>
+  <!--Exception Handling-->
+  <script>
+    document.getElementById("form").addEventListener('submit', error)
+    function error(event){
+      const file = document.getElementById("file").value  
+      const text = document.getElementById("text").value
+      if(text==''&& file==''){
+        event.preventDefault()
+        alert('Sorry...! \nYou must choose an option between file or text.')
+      }
+      else if(text && file ){
+        event.preventDefault()
+        alert('Sorry...! \nYou should choose only one option between file or text.')
+      }
+    }
+  </script>
+</body>
+
+</html>
